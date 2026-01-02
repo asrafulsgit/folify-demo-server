@@ -82,7 +82,7 @@ export const updateAdminSchema = z.object({
 export const createCourseSchema = z.object({
     body: z.object({
         name: z.string().min(1, 'Course name is required'),
-        slug: z.string().min(1, 'Slug is required'),
+        slug: z.string().min(1, 'Slug is required').optional(),
         index: z.number().optional(),
         isAvailableInWebsite: z.boolean().optional(),
         shortDescription: z.string().max(200, 'Short description must be less than 200 characters'),
@@ -98,7 +98,7 @@ export const createCourseSchema = z.object({
         teachers: z.array(z.object({
             name: z.string(),
             id: z.string(),
-            image: z.string()
+            image: z.string().optional()
         })).optional(),
         price: z.number().min(0),
         publishDate: z.string().optional(),
@@ -134,7 +134,7 @@ export const updateCourseSchema = z.object({
         teachers: z.array(z.object({
             name: z.string(),
             id: z.string(),
-            image: z.string()
+            image: z.string().optional()
         })).optional(),
         price: z.number().min(0).optional(),
         publishDate: z.string().optional(),
@@ -189,7 +189,7 @@ export const updateCourseStreamSchema = z.object({
 export const createBranchSchema = z.object({
     body: z.object({
         name: z.string().min(1, 'Branch name is required'),
-        slug: z.string().min(1, 'Slug is required'),
+        slug: z.string().min(1, 'Slug is required').optional(),
         phone: z.array(z.string()).min(1, 'At least one phone number is required'),
         email: z.string().email().optional(),
         address: z.string().min(1, 'Address is required'),
@@ -280,10 +280,10 @@ export const updateCouponSchema = z.object({
 export const createBlogSchema = z.object({
     body: z.object({
         title: z.string().min(1, 'Title is required'),
-        slug: z.string().min(1, 'Slug is required'),
+        slug: z.string().min(1, 'Slug is required').optional(),
         description: z.string().min(1, 'Description is required'),
         categoryId: z.string().min(1, 'Category ID is required'),
-        teacherId: z.string().min(1, 'Teacher ID is required'),
+        teacherId: z.string().min(1, 'Teacher ID is required').optional(),
         thumbnail: z.string().optional(),
         status: z.enum(['published', 'draft']).optional()
     })

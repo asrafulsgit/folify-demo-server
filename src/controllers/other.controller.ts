@@ -206,6 +206,24 @@ export const getCourseStreams = async (req: Request, res: Response): Promise<voi
     }
 };
 
+export const getCourseStreamById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const data = getData();
+        const course = (data.courseStreams || []).find((c: any) => c.id === id);
+
+        if (!course) {
+            res.status(404).json({ success: false, message: 'Course not found' });
+            return;
+        }
+
+        res.status(200).json({ success: true, data: course });
+    } catch (error) {
+        console.error('Get course error:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
 export const createCourseStream = async (req: Request, res: Response): Promise<void> => {
     try {
         console.log('Creating course stream with data:', req.body);
@@ -264,6 +282,22 @@ export const getBranches = async (req: Request, res: Response): Promise<void> =>
                 totalPages: Math.ceil(branches.length / limitNum),
                 totalItems: branches.length
             }
+        });
+    } catch (error) {
+        console.error('Get branches error:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+export const getBranchId = async (req: Request, res: Response): Promise<void> => {
+    try {
+    const { id } = req.params;
+        const data = getData();
+        const course = (data.branches || []).find((c: any) => c.id === id);[];
+
+        res.status(200).json({
+            success: true,
+            data: course
         });
     } catch (error) {
         console.error('Get branches error:', error);
@@ -465,6 +499,23 @@ export const getCoupons = async (req: Request, res: Response): Promise<void> => 
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
+export const getCouponById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const data = getData();
+        const admission = (data.coupons || []).find((a: any) => a.id === id);
+
+        if (!admission) {
+            res.status(404).json({ success: false, message: 'Coupons not found' });
+            return;
+        }
+
+        res.status(200).json({ success: true, data: admission });
+    } catch (error) {
+        console.error('Get Coupons error:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
 
 export const createCoupon = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -526,6 +577,24 @@ export const getBlogs = async (req: Request, res: Response): Promise<void> => {
         }
 
         res.status(200).json({ success: true, data: blogs });
+    } catch (error) {
+        console.error('Get blogs error:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+export const getBlogById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id } = req.params;
+        const data = getData();
+        const admission = (data.blogs || []).find((a: any) => a.id === id);
+
+        if (!admission) {
+            res.status(404).json({ success: false, message: 'blogs not found' });
+            return;
+        }
+
+        res.status(200).json({ success: true, data: admission });
     } catch (error) {
         console.error('Get blogs error:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });

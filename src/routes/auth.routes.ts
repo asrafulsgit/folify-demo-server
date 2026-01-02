@@ -8,7 +8,7 @@ import { loginController, logoutController } from '../controllers/auth.controlle
 import { validate } from '../middleware/validation.middleware';
 import { loginSchema } from '../validators';
 
-const router = Router();
+const router:Router = Router();
 
 /**
  * @swagger

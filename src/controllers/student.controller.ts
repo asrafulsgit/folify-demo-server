@@ -16,8 +16,9 @@ const getData = () => {
 
 export const getStudents = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { institute, district, status, search, page = '1', limit = '10', sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
-
+    const { institute, district, status, search, page = '1', limit = '10', 
+      sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
+    console.log(req.query)
     const data = getData();
     let students = data.students;
 

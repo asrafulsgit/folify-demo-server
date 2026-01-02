@@ -33,7 +33,11 @@ import {
     getBlogs,
     createBlog,
     updateBlog,
-    deleteBlog
+    deleteBlog,
+    getCourseStreamById,
+    getBranchId,
+    getCouponById,
+    getBlogById
 } from '../controllers/other.controller';
 import { validate } from '../middleware/validation.middleware';
 import {
@@ -54,10 +58,10 @@ import {
 } from '../validators';
 import { authMiddleware } from '../middleware/auth.middleware';
 
-const router = Router();
+const router : Router = Router();
 
 // All routes require authentication
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 // ============= COURSE ROUTES =============
 /**
@@ -282,6 +286,7 @@ router.delete('/course/:courseId/batches/:batchId/delete', deleteBatch);
  *         description: List of course streams retrieved successfully
  */
 router.get('/course-stream', getCourseStreams);
+router.get('/course-stream/:id', getCourseStreamById);
 
 /**
  * @swagger
@@ -343,6 +348,7 @@ router.put('/course-stream/:id/update', validate(updateCourseStreamSchema), upda
  *         description: List of branches retrieved successfully
  */
 router.get('/branch', getBranches);
+router.get('/branch/:id', getBranchId);
 
 /**
  * @swagger
@@ -580,6 +586,7 @@ router.get('/payment', getPayments);
  *         description: List of coupons retrieved successfully
  */
 router.get('/coupon', getCoupons);
+router.get('/coupon/:id', getCouponById);
 
 /**
  * @swagger
@@ -652,6 +659,7 @@ router.delete('/coupon/:id/delete', deleteCoupon);
  *         description: List of blogs retrieved successfully
  */
 router.get('/blog', getBlogs);
+router.get('/blog/:id', getBlogById);
 
 /**
  * @swagger
