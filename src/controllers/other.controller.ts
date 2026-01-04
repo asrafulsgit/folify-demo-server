@@ -6,6 +6,7 @@
 import { Request, Response } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Module } from '../types';
 
 const dataPath = path.join(__dirname, '../data/mockData.json');
 const additionalDataPath = path.join(__dirname, '../data/additionalData.json');
@@ -139,6 +140,24 @@ export const getBatches = async (req: Request, res: Response): Promise<void> => 
         res.status(200).json({ success: true, data: batches });
     } catch (error) {
         console.error('Get batches error:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+export const getBatchById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { courseId,batchId } = req.params;
+        const data = getData();
+        const batch = (data.batches || []).find((c: any) => c.id === batchId);
+
+        if (!batch) {
+            res.status(404).json({ success: false, message: 'batch not found' });
+            return;
+        }
+
+        res.status(200).json({ success: true, data: batch });
+    } catch (error) {
+        console.error('Get batch error:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 };
@@ -560,6 +579,7 @@ export const deleteCoupon = async (req: Request, res: Response): Promise<void> =
 };
 
 // ============= BLOG CONTROLLERS =============
+
 export const getBlogs = async (req: Request, res: Response): Promise<void> => {
     try {
         const { search, status } = req.query;
@@ -641,4 +661,168 @@ export const deleteBlog = async (req: Request, res: Response): Promise<void> => 
         console.error('Delete blog error:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
+};
+
+// ============= Modules CONTROLLERS =============
+
+export const getModulesByCourse = async (req: Request, res: Response) => {
+  try {
+    const { courseId } = req.params;
+    const { search, parentOnly } = req.query;
+    console.log(search)
+    const modules : Module[] = getData().modules;
+
+    let filtered = modules.filter(m => 
+      m.courseId === courseId && !m.isDeleted
+    );
+
+    if (parentOnly === 'true') {
+      filtered = filtered.filter(m => m.parentId === null);
+    }
+
+    if (search) {
+      const searchLower = (search as string).toLowerCase();
+      filtered = filtered.filter(m => 
+        m.name.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Build hierarchical structure
+    const parentModules = filtered.filter(m => m.parentId === null);
+    const result = parentModules.map(parent => ({
+      ...parent,
+      submodules: filtered.filter(m => m.parentId === parent.id)
+    }));
+
+    res.json({
+      success: true,
+      data: result,
+      total: result.length
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+export const getModuleById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const {courseId, moduleId } = req.params;
+        const data = getData();
+        const admission = (data.modules || []).find((a: any) => a.id === moduleId);
+
+        if (!admission) {
+            res.status(404).json({ success: false, message: 'modules not found' });
+            return;
+        }
+
+        res.status(200).json({ success: true, data: admission });
+    } catch (error) {
+        console.error('Get modules error:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
+export const createModule = async (req: Request, res: Response) => {
+  try {
+    const { courseId } = req.params;
+    const moduleData = { ...req.body, courseId };
+
+    console.log('Creating module:', moduleData);
+    const modules : Module[] = getData().modules;
+    const newModule: Module = {
+      id: `MOD${Date.now()}`,
+      slug: moduleData.slug,
+      index: moduleData.index || modules.filter(m => m.courseId === courseId).length + 1,
+      parentId: moduleData.parentId || null,
+      name: moduleData.name,
+      courseId,
+      isDeleted: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    modules.push(newModule);
+
+    res.status(201).json({
+      success: true,
+      message: 'Module created successfully',
+      data: newModule
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const updateModule = async (req: Request, res: Response) => {
+  try {
+    const { courseId, moduleId } = req.params;
+const modules : Module[] = getData().modules;
+    console.log('Updating module:', moduleId, req.body);
+
+    const moduleIndex = modules.findIndex(
+      m => m.id === moduleId && m.courseId === courseId && !m.isDeleted
+    );
+
+    if (moduleIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Module not found'
+      });
+    }
+
+    modules[moduleIndex] = {
+      ...modules[moduleIndex],
+      ...req.body,
+      updatedAt: new Date().toISOString()
+    };
+
+    res.json({
+      success: true,
+      message: 'Module updated successfully',
+      data: modules[moduleIndex]
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const deleteModule = async (req: Request, res: Response) => {
+  try {
+    const { courseId, moduleId } = req.params;
+
+    console.log('Deleting module:', moduleId);
+const modules : Module[] = getData().modules;
+    const moduleIndex = modules.findIndex(
+      m => m.id === moduleId && m.courseId === courseId
+    );
+
+    if (moduleIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Module not found'
+      });
+    }
+
+    // Soft delete
+    modules[moduleIndex].isDeleted = true;
+    modules[moduleIndex].updatedAt = new Date().toISOString();
+
+    res.json({
+      success: true,
+      message: 'Module deleted successfully'
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
 };

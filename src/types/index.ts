@@ -20,7 +20,17 @@ export interface Admin {
     createdAt: Date;
     updatedAt: Date;
 }
-
+export interface Module {
+  id: string;
+  slug: string;
+  index: number;
+  parentId: string | null;
+  name: string;
+  courseId: string;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 export interface Student {
     id: string;
     name: string;
@@ -130,18 +140,6 @@ export interface Batch {
     branchId: string;
     createdBy: string;
     updatedBy?: string;
-    isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-export interface Module {
-    id: string;
-    slug: string;
-    index: number;
-    parentId?: string;
-    name: string;
-    courseId: string;
     isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;

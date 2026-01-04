@@ -12,6 +12,16 @@ export const loginSchema = z.object({
     })
 });
 
+// module Schemas
+export const createModuleSchema = z.object({
+  name: z.string().min(1, 'Module name is required'),
+  parentId: z.string().nullable().optional(),
+});
+
+export const updateModuleSchema = z.object({
+  name: z.string().min(1).optional(),
+  parentId: z.string().nullable().optional()
+});
 // Student Schemas
 export const createStudentSchema = z.object({
     body: z.object({
@@ -156,7 +166,7 @@ export const createBatchSchema = z.object({
     body: z.object({
         name: z.string().min(1, 'Batch name is required'),
         description: z.string().optional(),
-        branchId: z.string().min(1, 'Branch ID is required')
+        branchId: z.string().min(1, 'Branch ID is required'),
     })
 });
 

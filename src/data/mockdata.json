@@ -1257,5 +1257,117 @@
       "updatedAt": "2024-01-01T00:00:00.000Z"
     }
   ],
-  "courses": []
+  "courses": [],
+  "modules": [
+    {
+      "id": "MOD001",
+      "slug": "introduction-to-programming",
+      "index": 1,
+      "parentId": null,
+      "name": "Introduction to Programming",
+      "courseId": "CRS001",
+      "isDeleted": false,
+      "createdAt": "2024-01-15T10:00:00.000Z",
+      "updatedAt": "2024-01-15T10:00:00.000Z"
+    },
+    {
+      "id": "MOD002",
+      "slug": "variables-and-data-types",
+      "index": 1,
+      "parentId": "MOD001",
+      "name": "Variables and Data Types",
+      "courseId": "CRS001",
+      "isDeleted": false,
+      "createdAt": "2024-01-16T10:00:00.000Z",
+      "updatedAt": "2024-01-16T10:00:00.000Z"
+    },
+    {
+      "id": "MOD003",
+      "slug": "control-structures",
+      "index": 2,
+      "parentId": "MOD001",
+      "name": "Control Structures",
+      "courseId": "CRS001",
+      "isDeleted": false,
+      "createdAt": "2024-01-17T10:00:00.000Z",
+      "updatedAt": "2024-01-17T10:00:00.000Z"
+    },
+    {
+      "id": "MOD004",
+      "slug": "functions-and-methods",
+      "index": 2,
+      "parentId": null,
+      "name": "Functions and Methods",
+      "courseId": "CRS001",
+      "isDeleted": false,
+      "createdAt": "2024-01-18T10:00:00.000Z",
+      "updatedAt": "2024-01-18T10:00:00.000Z"
+    },
+    {
+      "id": "MOD005",
+      "slug": "oop-basics",
+      "index": 3,
+      "parentId": null,
+      "name": "Object-Oriented Programming Basics",
+      "courseId": "CRS001",
+      "isDeleted": false,
+      "createdAt": "2024-01-19T10:00:00.000Z",
+      "updatedAt": "2024-01-19T10:00:00.000Z"
+    },
+    {
+      "id": "MOD006",
+      "slug": "web-fundamentals",
+      "index": 1,
+      "parentId": null,
+      "name": "Web Development Fundamentals",
+      "courseId": "CRS002",
+      "isDeleted": false,
+      "createdAt": "2024-01-20T10:00:00.000Z",
+      "updatedAt": "2024-01-20T10:00:00.000Z"
+    },
+    {
+      "id": "MOD007",
+      "slug": "html-css-basics",
+      "index": 1,
+      "parentId": "MOD006",
+      "name": "HTML & CSS Basics",
+      "courseId": "CRS002",
+      "isDeleted": false,
+      "createdAt": "2024-01-21T10:00:00.000Z",
+      "updatedAt": "2024-01-21T10:00:00.000Z"
+    },
+    {
+      "id": "MOD008",
+      "slug": "javascript-essentials",
+      "index": 2,
+      "parentId": "MOD006",
+      "name": "JavaScript Essentials",
+      "courseId": "CRS002",
+      "isDeleted": false,
+      "createdAt": "2024-01-22T10:00:00.000Z",
+      "updatedAt": "2024-01-22T10:00:00.000Z"
+    },
+    {
+      "id": "MOD009",
+      "slug": "react-basics",
+      "index": 2,
+      "parentId": null,
+      "name": "React Fundamentals",
+      "courseId": "CRS002",
+      "isDeleted": false,
+      "createdAt": "2024-01-23T10:00:00.000Z",
+      "updatedAt": "2024-01-23T10:00:00.000Z"
+    },
+    {
+      "id": "MOD010",
+      "slug": "data-science-intro",
+      "index": 1,
+      "parentId": null,
+      "name": "Introduction to Data Science",
+      "courseId": "CRS003",
+      "isDeleted": false,
+      "createdAt": "2024-01-24T10:00:00.000Z",
+      "updatedAt": "2024-01-24T10:00:00.000Z"
+    }
+  ]
 }

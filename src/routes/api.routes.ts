@@ -37,7 +37,13 @@ import {
     getCourseStreamById,
     getBranchId,
     getCouponById,
-    getBlogById
+    getBlogById,
+    getModulesByCourse,
+    createModule,
+    updateModule,
+    deleteModule,
+    getBatchById,
+    getModuleById
 } from '../controllers/other.controller';
 import { validate } from '../middleware/validation.middleware';
 import {
@@ -54,7 +60,9 @@ import {
     createCouponSchema,
     updateCouponSchema,
     createBlogSchema,
-    updateBlogSchema
+    updateBlogSchema,
+    createModuleSchema,
+    updateModuleSchema
 } from '../validators';
 import { authMiddleware } from '../middleware/auth.middleware';
 
@@ -203,6 +211,7 @@ router.put('/course/:id/update', validate(updateCourseSchema), updateCourse);
  *         description: List of batches retrieved successfully
  */
 router.get('/course/:id/batches', getBatches);
+router.get('/course/:courseId/batches/:batchId', getBatchById);
 
 /**
  * @swagger
@@ -637,6 +646,7 @@ router.put('/coupon/:id/update', validate(updateCouponSchema), updateCoupon);
 router.delete('/coupon/:id/delete', deleteCoupon);
 
 // ============= BLOG ROUTES =============
+
 /**
  * @swagger
  * /blog:
@@ -708,5 +718,13 @@ router.put('/blog/:id/update', validate(updateBlogSchema), updateBlog);
  *         description: Blog deleted successfully
  */
 router.delete('/blog/:id/delete', deleteBlog);
+
+// ============= Modules ROUTES =============
+router.get('/course/:courseId/module', getModulesByCourse);
+router.get('/course/:courseId/module/:moduleId', getModuleById);
+router.post('/course/:courseId/module/create',createModule);
+router.put('/course/:courseId/module/:moduleId/update', updateModule);
+router.delete('/course/:courseId/module/:moduleId/delete', deleteModule);
+
 
 export default router;
