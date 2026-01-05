@@ -18,7 +18,7 @@ export const getStudents = async (req: Request, res: Response): Promise<void> =>
   try {
     const { institute, district, status, search, page = '1', limit = '10', 
       sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
-    console.log(req.query)
+
     const data = getData();
     let students = data.students;
 
@@ -84,7 +84,7 @@ export const getStudents = async (req: Request, res: Response): Promise<void> =>
 
 export const createStudent = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log('Creating student with data:', req.body);
+
 
     res.status(201).json({
       success: true,
@@ -135,7 +135,7 @@ export const getStudentById = async (req: Request, res: Response): Promise<void>
 export const updateStudent = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    console.log(`Updating student ${id} with data:`, req.body);
+   
 
     const data = getData();
     const student = data.students.find((s: any) => s.id === id);
@@ -169,7 +169,7 @@ export const updateStudent = async (req: Request, res: Response): Promise<void> 
 export const deleteStudent = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    console.log(`Deleting student with ID: ${id}`);
+
 
     const data = getData();
     const student = data.students.find((s: any) => s.id === id);

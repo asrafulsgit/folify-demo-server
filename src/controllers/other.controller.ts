@@ -73,7 +73,7 @@ export const getCourses = async (req: Request, res: Response): Promise<void> => 
 
 export const createCourse = async (req: Request, res: Response): Promise<void> => {
     try {
-        console.log('Creating course with data:', req.body);
+
         res.status(201).json({
             success: true,
             message: 'Course created successfully (mock)',
@@ -106,7 +106,6 @@ export const getCourseById = async (req: Request, res: Response): Promise<void> 
 export const updateCourse = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Updating course ${id} with data:`, req.body);
 
         res.status(200).json({
             success: true,
@@ -165,7 +164,7 @@ export const getBatchById = async (req: Request, res: Response): Promise<void> =
 export const createBatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Creating batch for course ${id} with data:`, req.body);
+   
 
         res.status(201).json({
             success: true,
@@ -181,7 +180,7 @@ export const createBatch = async (req: Request, res: Response): Promise<void> =>
 export const updateBatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const { courseId, batchId } = req.params;
-        console.log(`Updating batch ${batchId} for course ${courseId} with data:`, req.body);
+       
 
         res.status(200).json({
             success: true,
@@ -197,7 +196,7 @@ export const updateBatch = async (req: Request, res: Response): Promise<void> =>
 export const deleteBatch = async (req: Request, res: Response): Promise<void> => {
     try {
         const { courseId, batchId } = req.params;
-        console.log(`Deleting batch ${batchId} from course ${courseId}`);
+       
 
         res.status(200).json({ success: true, message: 'Batch deleted successfully (mock)' });
     } catch (error) {
@@ -326,7 +325,7 @@ export const getBranchId = async (req: Request, res: Response): Promise<void> =>
 
 export const createBranch = async (req: Request, res: Response): Promise<void> => {
     try {
-        console.log('Creating branch with data:', req.body);
+    
         res.status(201).json({
             success: true,
             message: 'Branch created successfully (mock)',
@@ -341,7 +340,7 @@ export const createBranch = async (req: Request, res: Response): Promise<void> =
 export const updateBranch = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Updating branch ${id} with data:`, req.body);
+ 
 
         res.status(200).json({
             success: true,
@@ -357,7 +356,7 @@ export const updateBranch = async (req: Request, res: Response): Promise<void> =
 export const deleteBranch = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Deleting branch ${id}`);
+
 
         res.status(200).json({ success: true, message: 'Branch deleted successfully (mock)' });
     } catch (error) {
@@ -406,7 +405,7 @@ export const getAdmissions = async (req: Request, res: Response): Promise<void> 
 
 export const createAdmission = async (req: Request, res: Response): Promise<void> => {
     try {
-        console.log('Creating admission with data:', req.body);
+  
         res.status(201).json({
             success: true,
             message: 'Admission created successfully (mock)',
@@ -439,8 +438,7 @@ export const getAdmissionById = async (req: Request, res: Response): Promise<voi
 export const updateAdmission = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Updating admission ${id} with data:`, req.body);
-
+       
         res.status(200).json({
             success: true,
             message: 'Admission updated successfully (mock)',
@@ -455,7 +453,7 @@ export const updateAdmission = async (req: Request, res: Response): Promise<void
 export const deleteAdmission = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Deleting admission ${id}`);
+       
 
         res.status(200).json({ success: true, message: 'Admission deleted successfully (mock)' });
     } catch (error) {
@@ -466,17 +464,33 @@ export const deleteAdmission = async (req: Request, res: Response): Promise<void
 
 // ============= PAYMENT CONTROLLERS =============
 export const getPayments = async (req: Request, res: Response): Promise<void> => {
-    try {
+     try {
         const { search, status, course, page = '1', limit = '10' } = req.query;
+        const data = getData();
+        let admissions = data.payments || [];
+
+        if (status) admissions = admissions.filter((a: any) => a.status === status);
+        if (course) admissions = admissions.filter((a: any) => a.courseId === course);
+
+        if (search) {
+            const searchLower = (search as string).toLowerCase();
+            admissions = admissions.filter((a: any) =>
+                a.name.toLowerCase().includes(searchLower)
+            );
+        }
+
+        const pageNum = parseInt(page as string);
+        const limitNum = parseInt(limit as string);
+        const startIndex = (pageNum - 1) * limitNum;
+        const paginatedAdmissions = admissions.slice(startIndex, startIndex + limitNum);
 
         res.status(200).json({
             success: true,
-            data: [],
-            message: 'Payment list (mock data)',
+            data: paginatedAdmissions,
             pagination: {
-                currentPage: parseInt(page as string),
-                totalPages: 0,
-                totalItems: 0
+                currentPage: pageNum,
+                totalPages: Math.ceil(admissions.length / limitNum),
+                totalItems: admissions.length
             }
         });
     } catch (error) {
@@ -538,7 +552,7 @@ export const getCouponById = async (req: Request, res: Response): Promise<void> 
 
 export const createCoupon = async (req: Request, res: Response): Promise<void> => {
     try {
-        console.log('Creating coupon with data:', req.body);
+
         res.status(201).json({
             success: true,
             message: 'Coupon created successfully (mock)',
@@ -553,7 +567,7 @@ export const createCoupon = async (req: Request, res: Response): Promise<void> =
 export const updateCoupon = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Updating coupon ${id} with data:`, req.body);
+
 
         res.status(200).json({
             success: true,
@@ -569,7 +583,7 @@ export const updateCoupon = async (req: Request, res: Response): Promise<void> =
 export const deleteCoupon = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Deleting coupon ${id}`);
+     
 
         res.status(200).json({ success: true, message: 'Coupon deleted successfully (mock)' });
     } catch (error) {
@@ -623,7 +637,7 @@ export const getBlogById = async (req: Request, res: Response): Promise<void> =>
 
 export const createBlog = async (req: Request, res: Response): Promise<void> => {
     try {
-        console.log('Creating blog with data:', req.body);
+    
         res.status(201).json({
             success: true,
             message: 'Blog created successfully (mock)',
@@ -638,7 +652,7 @@ export const createBlog = async (req: Request, res: Response): Promise<void> => 
 export const updateBlog = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Updating blog ${id} with data:`, req.body);
+      
 
         res.status(200).json({
             success: true,
@@ -654,7 +668,7 @@ export const updateBlog = async (req: Request, res: Response): Promise<void> => 
 export const deleteBlog = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Deleting blog ${id}`);
+       
 
         res.status(200).json({ success: true, message: 'Blog deleted successfully (mock)' });
     } catch (error) {
@@ -669,7 +683,7 @@ export const getModulesByCourse = async (req: Request, res: Response) => {
   try {
     const { courseId } = req.params;
     const { search, parentOnly } = req.query;
-    console.log(search)
+
     const modules : Module[] = getData().modules;
 
     let filtered = modules.filter(m => 
@@ -729,7 +743,7 @@ export const createModule = async (req: Request, res: Response) => {
     const { courseId } = req.params;
     const moduleData = { ...req.body, courseId };
 
-    console.log('Creating module:', moduleData);
+  
     const modules : Module[] = getData().modules;
     const newModule: Module = {
       id: `MOD${Date.now()}`,
@@ -762,7 +776,7 @@ export const updateModule = async (req: Request, res: Response) => {
   try {
     const { courseId, moduleId } = req.params;
 const modules : Module[] = getData().modules;
-    console.log('Updating module:', moduleId, req.body);
+
 
     const moduleIndex = modules.findIndex(
       m => m.id === moduleId && m.courseId === courseId && !m.isDeleted
@@ -798,7 +812,7 @@ export const deleteModule = async (req: Request, res: Response) => {
   try {
     const { courseId, moduleId } = req.params;
 
-    console.log('Deleting module:', moduleId);
+
 const modules : Module[] = getData().modules;
     const moduleIndex = modules.findIndex(
       m => m.id === moduleId && m.courseId === courseId
@@ -826,3 +840,120 @@ const modules : Module[] = getData().modules;
     });
   }
 };
+
+export const getCourseReviews = async (req: Request, res: Response) => {
+  try {
+    const { courseId } = req.params;
+    const { rating, page = 1, limit = 20 } = req.query;
+    const reviews = getData().reviews;
+    let filtered = reviews.filter((r : any) => r.courseId === courseId);
+
+    if (rating) {
+      filtered = filtered.filter((r : any) => r.rating === Number(rating));
+    }
+
+    const startIndex = (Number(page) - 1) * Number(limit);
+    const paginatedData = filtered.slice(startIndex, startIndex + Number(limit));
+
+    const avgRating = filtered.length > 0
+      ? filtered.reduce((sum :any, r :any) => sum + r.rating, 0) / filtered.length
+      : 0;
+
+    res.json({
+      success: true,
+      data: paginatedData,
+      stats: {
+        averageRating: avgRating.toFixed(2),
+        totalReviews: filtered.length
+      }
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// export const createReview = async (req: Request, res: Response) => {
+//   try {
+//     const { courseId } = req.params;
+//     const studentId = 'current_student_id'; // Should come from auth
+    
+//     console.log('Creating review:', courseId, req.body);
+
+//     const newReview: Review = {
+//       id: `REV${Date.now()}`,
+//       studentId,
+//       courseId,
+//       rating: req.body.rating,
+//       comment: req.body.comment,
+//       createdAt: new Date().toISOString()
+//     };
+
+//     reviews.push(newReview);
+
+//     res.status(201).json({
+//       success: true,
+//       message: 'Review created successfully',
+//       data: newReview
+//     });
+//   } catch (error: any) {
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
+// export const updateReview = async (req: Request, res: Response) => {
+//   try {
+//     const { courseId, reviewId } = req.params;
+//     console.log('Updating review:', reviewId, req.body);
+
+//     const reviewIndex = reviews.findIndex(r => 
+//       r.id === reviewId && r.courseId === courseId
+//     );
+
+//     if (reviewIndex === -1) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Review not found'
+//       });
+//     }
+
+//     reviews[reviewIndex] = {
+//       ...reviews[reviewIndex],
+//       ...req.body
+//     };
+
+//     res.json({
+//       success: true,
+//       message: 'Review updated successfully',
+//       data: reviews[reviewIndex]
+//     });
+//   } catch (error: any) {
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
+// export const deleteReview = async (req: Request, res: Response) => {
+//   try {
+//     const { courseId, reviewId } = req.params;
+//     console.log('Deleting review:', reviewId);
+
+//     const reviewIndex = reviews.findIndex(r => 
+//       r.id === reviewId && r.courseId === courseId
+//     );
+
+//     if (reviewIndex === -1) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Review not found'
+//       });
+//     }
+
+//     reviews.splice(reviewIndex, 1);
+
+//     res.json({
+//       success: true,
+//       message: 'Review deleted successfully'
+//     });
+//   } catch (error: any) {
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };

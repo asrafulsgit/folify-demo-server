@@ -43,7 +43,8 @@ import {
     updateModule,
     deleteModule,
     getBatchById,
-    getModuleById
+    getModuleById,
+    getCourseReviews
 } from '../controllers/other.controller';
 import { validate } from '../middleware/validation.middleware';
 import {
@@ -596,6 +597,13 @@ router.get('/payment', getPayments);
  */
 router.get('/coupon', getCoupons);
 router.get('/coupon/:id', getCouponById);
+
+
+router.get('/course/:courseId/review', getCourseReviews);
+// router.post('/course/:courseId/review/create', validateRequest(createReviewSchema), createReview);
+// router.put('/course/:courseId/review/:reviewId/update', validateRequest(updateReviewSchema), updateReview);
+// router.delete('/course/:courseId/review/:reviewId/delete', deleteReview);
+
 
 /**
  * @swagger

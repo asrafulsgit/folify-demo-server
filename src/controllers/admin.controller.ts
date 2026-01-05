@@ -17,7 +17,7 @@ const getData = () => {
 export const getAdmins = async (req: Request, res: Response): Promise<void> => {
     try {
         const { search, status, type, page = '1', limit = '10', sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
-        console.log(req.query)
+        
         const data = getData();
         let admins = data.admins;
 
@@ -53,7 +53,7 @@ export const getAdmins = async (req: Request, res: Response): Promise<void> => {
         const startIndex = (pageNum - 1) * limitNum;
         const endIndex = startIndex + limitNum;
         const paginatedAdmins = admins.slice(startIndex, endIndex);
-             console.log(paginatedAdmins)
+   
         res.status(200).json({
             success: true,
             data: paginatedAdmins,
@@ -75,7 +75,6 @@ export const getAdmins = async (req: Request, res: Response): Promise<void> => {
 
 export const createAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
-        console.log('Creating admin with data:', req.body);
 
         res.status(201).json({
             success: true,
@@ -126,8 +125,6 @@ export const getAdminById = async (req: Request, res: Response): Promise<void> =
 export const updateAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Updating admin ${id} with data:`, req.body);
-
         const data = getData();
         const admin = data.admins.find((a: any) => a.id === id);
 
@@ -160,7 +157,7 @@ export const updateAdmin = async (req: Request, res: Response): Promise<void> =>
 export const deleteAdmin = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        console.log(`Deleting admin with ID: ${id}`);
+  
 
         const data = getData();
         const admin = data.admins.find((a: any) => a.id === id);
