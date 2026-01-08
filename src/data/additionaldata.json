@@ -25,7 +25,7 @@
                     "value": "15+"
                 }
             ],
-            "type": "Online",
+            "type": "Offline",
             "courseCategory": "One Time Fee",
             "courseStreamId": "CS001",
             "teachers": [
